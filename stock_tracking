@@ -60,7 +60,7 @@ for description in descriptions:
     message = client.messages.create(
         body=f"TSLA{acceleration}\n:{percentage_change:.2f}\nHeadline:{description}\nBreif:{content}",
         from_="+16235524908",
-        to="+917993863807"
+        to="+91"
     )
     print(message.status)
     print(description)
