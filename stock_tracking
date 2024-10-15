@@ -1,0 +1,66 @@
+import requests
+import datetime
+from datetime import datetime, timedelta
+
+now = datetime.now()
+yesterday_date = now - timedelta(days=1)
+yesterday = yesterday_date.date()
+
+yesteryesterday = now - timedelta(days=2)
+dbyesterday = yesteryesterday.date()
+
+
+STOCK_NAME = "TSLA"
+COMPANY_NAME = "Tesla Inc"
+
+STOCK_ENDPOINT = "https://www.alphavantage.co/query"
+NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
+
+
+from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
+import os
+
+api_key = 
+symbol = 'IBM'
+function = 'TIME_SERIES_DAILY'
+url = f'https://www.alphavantage.co/query?function={function}&symbol={symbol}&apikey={api_key}'
+newsurl = f"https://newsapi.org/v2/everything?q=India&from=2024-06-22&to=2024-06-25&sortBy=popularity&apiKey=580fda539c9542fc90703128efda5f8a"
+account_sid = 
+auth_token = 
+client = Client(account_sid, auth_token)
+acceleration = "D 🔻"
+print(acceleration)
+
+def calculate_percentage_change(old_price, new_price):
+    return ((new_price - old_price) / old_price) * 100
+
+
+response = requests.get(url)
+data = response.json()
+weather_data = response.json()
+old_price = (data["Time Series (Daily)"][str(yesterday)]['4. close'])
+new_price = (data["Time Series (Daily)"][str(dbyesterday)]['4. close'])
+#stock_change = float(yesterdays_end) - float(dbyesterday_end)
+percentage_change = calculate_percentage_change(float(old_price), float(new_price))
+print(f"{percentage_change:.2f}")
+if percentage_change > 0:
+    acceleration="  ^"
+if percentage_change >=5:
+    print("big news")
+    
+
+newsinjson = requests.get(newsurl)
+news = newsinjson.json()
+
+descriptions = [article["description"] for article in news["articles"][:3]]
+content = [article["content"] for article in news["articles"][:3]]
+
+for description in descriptions:
+    message = client.messages.create(
+        body=f"TSLA{acceleration}\n:{percentage_change:.2f}\nHeadline:{description}\nBreif:{content}",
+        from_="+16235524908",
+        to="+917993863807"
+    )
+    print(message.status)
+    print(description)
