@@ -10,7 +10,7 @@ yesteryesterday = now - timedelta(days=2)
 dbyesterday = yesteryesterday.date()
 
 
-STOCK_NAME = "TSLA"
+STOCK_NAME = "TSLA" # You can select any other company
 COMPANY_NAME = "Tesla Inc"
 
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
@@ -21,13 +21,13 @@ from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 import os
 
-api_key = 
+api_key = os.getenv(API_KEY)
 symbol = 'IBM'
 function = 'TIME_SERIES_DAILY'
 url = f'https://www.alphavantage.co/query?function={function}&symbol={symbol}&apikey={api_key}'
 newsurl = f"https://newsapi.org/v2/everything?q=India&from=2024-06-22&to=2024-06-25&sortBy=popularity&apiKey=580fda539c9542fc90703128efda5f8a"
-account_sid = 
-auth_token = 
+account_sid = os.getenv(ACCOUNT_SID)
+auth_token = os.getenv(AUTH_TOKEN)
 client = Client(account_sid, auth_token)
 acceleration = "D 🔻"
 print(acceleration)
@@ -59,8 +59,8 @@ content = [article["content"] for article in news["articles"][:3]]
 for description in descriptions:
     message = client.messages.create(
         body=f"TSLA{acceleration}\n:{percentage_change:.2f}\nHeadline:{description}\nBreif:{content}",
-        from_="+16235524908",
-        to="+91"
+        from_="+XX XXXXXXXX",      # The number provided by twilio
+        to="+XX XXXXXXX"           # Your Phone number
     )
     print(message.status)
     print(description)
